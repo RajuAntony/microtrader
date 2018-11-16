@@ -9,6 +9,11 @@ REPO_NAME ?= microtrader
 TEST_REPO_NAME ?= microtrader-dev
 TEST_DIR ?= build/test-results/junit/
 
+# aws ecr settings 
+DOCKER_REGISTRY ?= 508435323268.dkr.ecr.us-east-1.amazonaws.com
+AWS_ACCOUNT_ID ?=  508435323268
+DOCKER_LOGIN_EXPRESSION := eval $$(aws ecr get-login --registry-ids $(AWS_ACCOUNT_ID) --no-include-email)
+
 # Release settings
 export HTTP_PORT ?= 8000
 export AUDIT_HTTP_ROOT ?= /audit/
@@ -113,6 +118,7 @@ tag%default:
 
 # Login to Docker registry
 login:
+	${INFO} " AWS ACCOUNT ID IS $$AWS_ACCOUNT_ID ......."
 	${INFO} "Logging in to Docker registry $$DOCKER_REGISTRY..."
 	@ $(DOCKER_LOGIN_EXPRESSION)
 	${INFO} "Logged in to Docker registry $$DOCKER_REGISTRY"
